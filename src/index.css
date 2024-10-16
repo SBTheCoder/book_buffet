@@ -2,7 +2,7 @@ body{
   margin : 0px;
   padding: 0px;
   font-family: sans-serif;
-  /* background-image: url("../src/images/bg.jpg"); */
+   background-image: url("../src/images/bg6.jpg"); 
   background-repeat: no-repeat;
-  background-size: 500px;
+  background-size: 100%;
 }
