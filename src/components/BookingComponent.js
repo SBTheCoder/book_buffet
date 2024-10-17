@@ -21,127 +21,183 @@ const BookingComponent = () => {
         bookedOnError: ""
     });
 
-    const [messages] = useState({
+    const messages = {
         "EMAILID_ERROR": "Please enter a valid email",
         "PLATE_COUNT_ERROR": "Plate count(s) should be 1 or more",
         "BUFFET_NAME_ERROR": "Please select buffet type",
         "BOOKED_ON_ERROR": "Booking date should be after today's date",
         "ERROR": "Something went wrong",
         "MANDATORY": "Enter all the form fields"
-    });
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-    }
+
+        // Check if the form is valid
+        if (valid) {
+            setSuccessMessage("Booked successfully");
+            setErrorMessage("");
+            setMandatory(false);
+        } else {
+            setMandatory(true);
+            setErrorMessage(messages.ERROR);
+        }
+    };
 
     const validateField = (name, value) => {
-        let errors = formErrors;
+        let errors = { ...formErrors };
         switch (name) {
-            case "buffetName": if (!validation.validateBuffet(value)) {
-                errors.buffetNameError = messages.BUFFET_NAME_ERROR;
-            }
-            else {
-                errors.buffetNameError = "";
-            }
+            case "buffetName":
+                errors.buffetNameError = validation.validateBuffet(value) ? "" : messages.BUFFET_NAME_ERROR;
                 break;
-            case "emailId": if (validation.validEmail(value) === false) {
-                errors.emailIdError = messages.EMAILID_ERROR;
-            }
-            else {
-                errors.emailIdError = "";
-            }
+            case "emailId":
+                errors.emailIdError = validation.validEmail(value) ? "" : messages.EMAILID_ERROR;
                 break;
-            case "plateCount": if (!validation.validPlateCount(value)) {
-                errors.plateCountError = messages.PLATE_COUNT_ERROR;
-            }
-            else {
-                errors.plateCountError = "";
-            }
+            case "plateCount":
+                errors.plateCountError = validation.validPlateCount(value) ? "" : messages.PLATE_COUNT_ERROR;
                 break;
-            case "bookedOn": if (!validation.validDate(value)) {
-                errors.bookedOnError = messages.BOOKED_ON_ERROR;
-            }
-            else {
-                errors.bookedOnError = "";
-            }
+            case "bookedOn":
+                errors.bookedOnError = validation.validDate(value) ? "" : messages.BOOKED_ON_ERROR;
                 break;
             default:
                 break;
-
-
         }
-        if (Object.values(errors).every((value) => value === "")) {
+
+        setFormErrors(errors);
+
+        // Set validity state
+        if (Object.values(errors).every((error) => error === "")) {
             setValid(true);
-        }
-        else {
+        } else {
             setValid(false);
         }
-        setFormErrors({ ...formErrors, [name]: value });
-    }
+    };
 
     const handleChange = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
+        const { name, value } = e.target;
+        setState({ ...state, [name]: value });
         validateField(name, value);
-        return setState({ ...state, [name]: value });
-    }
-    const handleClick = (e)=>{
-        let {name , value} = e.target;
-        validateField(name, value);
-    }
+    };
 
     return (
         <React.Fragment>
-            <div className="CreateBooking" >
+            <div className="CreateBooking">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
                         <br />
-                        <div className="card" style={{background: "#4abcf6"}}>
+                        <div className="card" style={{ background: "#f0f8ff" }}>
                             <div className="card-header bg-custom">
-                                <h4 style={{background:"pink"}} >Book Your Buffet </h4>
-
+                                <h4 style={{ background: "#ffcccb" }}>Book Your Buffet</h4>
                             </div>
                             <div className="card-body">
-                                <form className="form" onSubmit={(event) => { handleSubmit() }}>
+                                <form className="form" onSubmit={handleSubmit}>
                                     <div className="form-group">
-                                        <label> Buffet Name</label>
-                                        <select name="buffetName" className="form-control" value={state.buffetName} onChange={handleChange} >
-                                            <option value='' disabled>Select a buffet</option>
-                                            <option value='SouthIndianFestivalSpecial'>South Indian Festival Special</option>
-                                            <option value='NorthIndianFestivalSpecial'>North Indian Festival Special</option>
-                                            <option value='ChineseSpecial'>Chinese Special</option>
+                                        <label>Buffet Name</label>
+                                        <select
+                                            name="buffetName"
+                                            className="form-control"
+                                            value={state.buffetName}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Select a buffet
+                                            </option>
+                                            <option value="SouthIndianFestivalSpecial">
+                                                South Indian Festival Special
+                                            </option>
+                                            <option value="NorthIndianFestivalSpecial">
+                                                North Indian Festival Special
+                                            </option>
+                                            <option value="ChineseSpecial">Chinese Special</option>
                                         </select>
-                                        {formErrors.buffetNameError ? <span className="text-danger">{messages.BUFFET_NAME_ERROR}</span> : null}
+                                        {formErrors.buffetNameError && (
+                                            <span className="text-danger">
+                                                {formErrors.buffetNameError}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Email Id</label>
-                                        <input type="email" name="emailId" className="form-control" placeholder="Enter your email"
-                                            value={state.emailId} onChange={handleChange} onClick={handleClick} required />
-                                        {formErrors.emailIdError ? <span className="text-danger">{messages.EMAILID_ERROR}</span> : null}
+                                        <input
+                                            type="email"
+                                            name="emailId"
+                                            className="form-control"
+                                            placeholder="Enter your email"
+                                            value={state.emailId}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {formErrors.emailIdError && (
+                                            <span className="text-danger">
+                                                {formErrors.emailIdError}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Plate Count</label>
-                                        <input type="number" name="plateCount" className="form-control" placeholder="Number of plates" value={state.plateCount} onChange={handleChange} required />
-                                        {formErrors.plateCountError ? <span className="text-danger">{messages.PLATE_COUNT_ERROR}</span> : null}
+                                        <input
+                                            type="number"
+                                            name="plateCount"
+                                            className="form-control"
+                                            placeholder="Number of plates"
+                                            value={state.plateCount}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {formErrors.plateCountError && (
+                                            <span className="text-danger">
+                                                {formErrors.plateCountError}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Booking Date</label>
-                                        <input type="date" name="bookedOn" className="form-control" value={state.bookedOn} onChange={handleChange} required />
-                                        {formErrors.bookedOnError ? <span className="text-danger">{messages.BOOKED_ON_ERROR}</span> : null}
+                                        <input
+                                            type="date"
+                                            name="bookedOn"
+                                            className="form-control"
+                                            value={state.bookedOn}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {formErrors.bookedOnError && (
+                                            <span className="text-danger">
+                                                {formErrors.bookedOnError}
+                                            </span>
+                                        )}
                                     </div>
                                     <br />
-                                    <button type="submit" name="active" className="btn-btn-primary" style={{background:"lightgreen"}}>Book Buffet</button>
-                                    {mandatory ? <div id="mandatory" className="text-danger">{messages.MANDATORY}</div> : null}
-                                    {errorMessage ? <div id="error" className="text-danger">{messages.ERROR}</div> : null}
-                                    {successMessage ? <div id="success" className="text-success">Booked successfully</div> : null}
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                        style={{ background: "#28a745", borderColor: "#28a745" }}
+                                    >
+                                        Book Buffet
+                                    </button>
+                                    {mandatory && (
+                                        <div id="mandatory" className="text-danger">
+                                            {messages.MANDATORY}
+                                        </div>
+                                    )}
+                                    {errorMessage && (
+                                        <div id="error" className="text-danger">
+                                            {errorMessage}
+                                        </div>
+                                    )}
+                                    {successMessage && (
+                                        <div id="success" className="text-success">
+                                            {successMessage}
+                                        </div>
+                                    )}
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </React.Fragment>
-    )
-}
+    );
+};
 
 export default BookingComponent;
