@@ -1,0 +1,22 @@
+{
+  "bookings": [
+    {
+      "buffetName": "NorthIndianFestivalSpecial",
+      "bookedOn": "2024-10-26",
+      "emailId": "dk@gmail.com",
+      "plateCount": "7"
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-10-27",
+      "emailId": "sateeshbhat33@gmail.com",
+      "plateCount": "3"
+    },
+    {
+      "buffetName": "ChineseSpecial",
+      "bookedOn": "2024-11-20",
+      "emailId": "abc@gmail.com",
+      "plateCount": "5"
+    }
+  ]
+}
