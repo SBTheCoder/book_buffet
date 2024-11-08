@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { validation } from "../validators/validation";
 
 const BookingComponent = () => {
+    const url = "http://localhost:4000/booking/";
     const [state, setState] = useState({
         buffetName: "",
         bookedOn: "",
@@ -22,25 +24,31 @@ const BookingComponent = () => {
     });
 
     const messages = {
-        "EMAILID_ERROR": "Please enter a valid email",
-        "PLATE_COUNT_ERROR": "Plate count(s) should be 1 or more",
-        "BUFFET_NAME_ERROR": "Please select buffet type",
-        "BOOKED_ON_ERROR": "Booking date should be after today's date",
-        "ERROR": "Something went wrong",
-        "MANDATORY": "Enter all the form fields"
+        EMAILID_ERROR: "Please enter a valid email",
+        PLATE_COUNT_ERROR: "Plate count(s) should be 1 or more",
+        BUFFET_NAME_ERROR: "Please select buffet type",
+        BOOKED_ON_ERROR: "Booking date should be after today's date",
+        ERROR: "Something went wrong",
+        MANDATORY: "Enter all the form fields"
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if the form is valid
         if (valid) {
-            setSuccessMessage("Booked successfully");
-            setErrorMessage("");
-            setMandatory(false);
+            try {
+                const response = await axios.post(url, state);
+                if (response.status === 201) {
+                    setSuccessMessage("Booked successfully");
+                    setErrorMessage("");
+                    setMandatory(false);
+                }
+            } catch (error) {
+                setErrorMessage(messages.ERROR);
+            }
         } else {
             setMandatory(true);
-            setErrorMessage(messages.ERROR);
+            setErrorMessage(messages.MANDATORY);
         }
     };
 
@@ -64,13 +72,7 @@ const BookingComponent = () => {
         }
 
         setFormErrors(errors);
-
-        // Set validity state
-        if (Object.values(errors).every((error) => error === "")) {
-            setValid(true);
-        } else {
-            setValid(false);
-        }
+        setValid(Object.values(errors).every((error) => error === ""));
     };
 
     const handleChange = (e) => {
@@ -172,6 +174,7 @@ const BookingComponent = () => {
                                         type="submit"
                                         className="btn btn-primary"
                                         style={{ background: "#28a745", borderColor: "#28a745" }}
+                                        disabled={!valid}
                                     >
                                         Book Buffet
                                     </button>
