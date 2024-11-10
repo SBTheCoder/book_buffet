@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { validation } from "../validators/validation";
 
 const BookingComponent = () => {
     const url = "http://localhost:4000/booking/";
+    const formRef = useRef(null);
     const [state, setState] = useState({
         buffetName: "",
         bookedOn: "",
@@ -39,9 +40,27 @@ const BookingComponent = () => {
             try {
                 const response = await axios.post(url, state);
                 if (response.status === 201) {
-                    setSuccessMessage("Booked successfully");
+                    const bookingId = response.data.id;
+                    setSuccessMessage(`Booked successfully with ID ${bookingId}`);
                     setErrorMessage("");
                     setMandatory(false);
+
+                    // Reset form fields to initial values
+                    setState({
+                        buffetName: "",
+                        bookedOn: "",
+                        emailId: "",
+                        plateCount: ""
+                    });
+
+                    // Reset form errors and validation states
+                    setFormErrors({
+                        emailIdError: "",
+                        plateCountError: "",
+                        buffetNameError: "",
+                        bookedOnError: ""
+                    });
+                    setValid(false);
                 }
             } catch (error) {
                 setErrorMessage(messages.ERROR);
@@ -92,7 +111,7 @@ const BookingComponent = () => {
                                 <h4 style={{ background: "#ffcccb" }}>Book Your Buffet</h4>
                             </div>
                             <div className="card-body">
-                                <form className="form" onSubmit={handleSubmit}>
+                                <form className="form" onSubmit={handleSubmit} ref={formRef}>
                                     <div className="form-group">
                                         <label>Buffet Name</label>
                                         <select
