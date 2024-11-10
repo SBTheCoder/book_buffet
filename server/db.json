@@ -17,6 +17,79 @@
       "bookedOn": "2024-11-20",
       "emailId": "abc@gmail.com",
       "plateCount": "5"
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-15",
+      "emailId": "Nikhil@gmail.com",
+      "plateCount": "2"
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-24",
+      "emailId": "Nikhil@gmail.com",
+      "plateCount": "2"
+    },
+    {
+      "buffetName": "ChineseSpecial",
+      "bookedOn": "2024-11-16",
+      "emailId": "RP@gmail.com",
+      "plateCount": "2"
+    },
+    {
+      "buffetName": "NorthIndianFestivalSpecial",
+      "bookedOn": "2024-11-10",
+      "emailId": "RP@gmail.com",
+      "plateCount": "2"
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-23",
+      "emailId": "RP@gmail.com",
+      "plateCount": "5",
+      "id": 101
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-24",
+      "emailId": "RP@gmail.com",
+      "plateCount": "5",
+      "id": 102
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-23",
+      "emailId": "Gopika@gmail.com",
+      "plateCount": "3",
+      "id": 103
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-16",
+      "emailId": "sb33@gmail.com",
+      "plateCount": "2",
+      "id": null
+    },
+    {
+      "buffetName": "NorthIndianFestivalSpecial",
+      "bookedOn": "2024-11-29",
+      "emailId": "virat@gmail.com",
+      "plateCount": "4",
+      "id": 104
+    },
+    {
+      "buffetName": "NorthIndianFestivalSpecial",
+      "bookedOn": "2024-11-24",
+      "emailId": "shreya@gmail.com",
+      "plateCount": "3",
+      "id": 106
+    },
+    {
+      "buffetName": "SouthIndianFestivalSpecial",
+      "bookedOn": "2024-11-27",
+      "emailId": "shreya@gmail.com",
+      "plateCount": "1",
+      "id": 107
     }
   ]
 }
